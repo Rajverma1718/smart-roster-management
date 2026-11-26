@@ -15,7 +15,7 @@ There are no package installs, API keys, build commands, or environment variable
 
 The Node server stores master data and plans in a central JSON file, `roster-data.json`. Open two tabs at the local URL to use the same saved roster. Revision checks prevent an older tab from overwriting a newer save. This server binds to the local machine and is intended for assessment.
 
-On static hosting or when opening the portable HTML file, the demo uses localStorage. Each browser starts with its own fictional dataset and keeps its own draft and publish status. Settings  Reset sample data restores the December 2026 scenario. Use the demo with fictional information.
+On static hosting or when opening the portable HTML file, the demo uses localStorage. Each browser starts with its own fictional dataset and keeps its own draft and publish status. Settings > Reset sample data restores the December 2026 scenario. Use the demo with fictional information.
 
 ## Try it
 
