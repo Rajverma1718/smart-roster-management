@@ -76,7 +76,7 @@ function render(){
   const calendar=dates.map(x=>option(x,x,day)).join('');
   const demo=monthInput.value===DEMO_MONTH&&state.employees.some(e=>e.id==='e1')?btn('demo','Demonstrate leave change'):'';
   let markup='<h2>'+view+(view==='Company'?' roster':' view')+'</h2><div class="filters">'+pick+'<label>Inspect date<select id="day">'+calendar+'</select></label>'+demo+'</div>';
-  if(view==='Pod'&&chosen)markup+='<p>Pod lead � '+esc(name('employees',chosen.lead))+'</p>';
+  if(view==='Pod'&&chosen)markup+='<p>Pod lead - '+esc(name('employees',chosen.lead))+'</p>';
   const relevant=n=>view==='Brand'?n.rule.brand===filter:view==='Process'?n.rule.process===filter:view==='Pod'?state.brands.some(b=>b.id===n.rule.brand&&b.pod===filter):view==='Employee'?state.assignments.some(a=>a.rule===n.rule.id&&a.employee===filter):true;
   if(view==='Brand'||view==='Process'){
     const rows=p.days[day].needs.filter(relevant).map(n=>[
@@ -92,12 +92,12 @@ function render(){
   }else{
     const people=state.employees.filter(e=>view==='Employee'?e.id===filter:view==='Pod'?e.pod===filter:true);
     const short={work:'W',idle:'A',off:'O',holiday:'H',leave:'L',comp:'C',unavailable:'U'};
-    markup+='<div class="legend">'+Object.entries(short).map(([key,val])=>pill(val+' � '+labels[key],key)).join('')+'</div>';
+    markup+='<div class="legend">'+Object.entries(short).map(([key,val])=>pill(val+' - '+labels[key],key)).join('')+'</div>';
     markup+=table(['Employee',...dates.map(d=>d.slice(-2))],people.map(e=>[esc(e.name),...dates.map(d=>{
       const s=p.days[d].status[e.id];
       return '<button type="button" class="pill '+s+'" data-act="change" data-id="'+esc(e.id)+'" data-extra="'+d+'" aria-label="'+esc(e.name+' '+d+' '+labels[s])+'">'+short[s]+'</button>';
     })]),'grid');
-    markup+='<h3 style="margin-top:17px">Staffing on '+day+'</h3>'+table(['Employee','Status','Scheduled work'],people.map(e=>[esc(e.name),pill(labels[p.days[day].status[e.id]],p.days[day].status[e.id]),esc(p.days[day].needs.filter(n=>n.staff.includes(e.id)).map(n=>n.rule.slot+' '+title(n.rule)).join(' � ')||'-')]));
+    markup+='<h3 style="margin-top:17px">Staffing on '+day+'</h3>'+table(['Employee','Status','Scheduled work'],people.map(e=>[esc(e.name),pill(labels[p.days[day].status[e.id]],p.days[day].status[e.id]),esc(p.days[day].needs.filter(n=>n.staff.includes(e.id)).map(n=>n.rule.slot+' '+title(n.rule)).join(' - ')||'-')]));
   }
   panel.innerHTML=markup;
 }
@@ -208,7 +208,7 @@ function remove(key,index){
 function change(id,date,demo){
   const choice=state.exceptions[date]?.[id]||(demo?'leave':'');
   const values=[{id:'',name:'Use regular schedule'},{id:'leave',name:'Planned leave'},{id:'comp',name:'Approved comp-off'},{id:'unavailable',name:'Unavailable'},{id:'off',name:'Additional weekly off'}];
-  openForm(name('employees',id)+' � '+date,(demo?'<p>Meera covers Urban Loom. Apply leave and review the resulting coverage gap.</p>':'')+select('status','Availability override',values,choice),data=>{
+  openForm(name('employees',id)+' - '+date,(demo?'<p>Meera covers Urban Loom. Apply leave and review the resulting coverage gap.</p>':'')+select('status','Availability override',values,choice),data=>{
     state.exceptions[date]??={};
     const status=data.get('status');
     if(status)state.exceptions[date][id]=status;else delete state.exceptions[date][id];
@@ -220,9 +220,9 @@ function staff(id,date){
   const n=plan().days[date].needs.find(x=>x.rule.id===id);
   const list=state.assignments.filter(a=>a.rule===id);
   const selected=plan().locks[date]?.[id]??n.staff;
-  const body='<p>'+date+' � '+n.rule.slot+' � Minimum '+n.required+'</p><label>Scheduling mode<select name="mode">'+option('manual','Manual staffing',Object.hasOwn(plan().locks[date]||{},id)?'manual':'')+option('auto','Automatic staffing','')+'</select></label><label>Staff to schedule<select name="staff" multiple>'+list.map(a=>{
+  const body='<p>'+date+' - '+n.rule.slot+' - Minimum '+n.required+'</p><label>Scheduling mode<select name="mode">'+option('manual','Manual staffing',Object.hasOwn(plan().locks[date]||{},id)?'manual':'')+option('auto','Automatic staffing','')+'</select></label><label>Staff to schedule<select name="staff" multiple>'+list.map(a=>{
     const e=state.employees.find(x=>x.id===a.employee);
-    return '<option value="'+esc(e.id)+'" '+(selected.includes(e.id)?'selected':'')+'>'+esc(e.name+(a.backup?' (trained backup)':'')+(available(e,date,state)?' � '+labels[available(e,date,state)] :''))+'</option>';
+    return '<option value="'+esc(e.id)+'" '+(selected.includes(e.id)?'selected':'')+'>'+esc(e.name+(a.backup?' (trained backup)':'')+(available(e,date,state)?' - '+labels[available(e,date,state)] :''))+'</option>';
   }).join('')+'</select></label><p>Use Ctrl or Cmd to select multiple people. Manual staffing is checked against availability and overlapping work.</p>';
   openForm(title(n.rule),body,data=>{
     plan().locks[date]??={};
