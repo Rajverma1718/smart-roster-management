@@ -4,7 +4,12 @@
 <section id="login" class="shell login"><h1>Welcome to your team space</h1><p>Sign in to manage your schedule, people, and time off.</p><button id="signIn" class="primary">Continue with Google</button><p id="loginError" class="error" role="alert"></p></section><main class="shell" hidden>
 <div class="intro"><div><h1>Team schedule</h1><p>Manage your people, plan work, and keep every client covered.</p></div><div class="actions"><label>Roster month<input id="month" type="month" min="2000-01" max="2099-12"></label><button id="generate" class="primary">Create schedule</button><button id="publish">Finalise schedule</button></div></div>
 <div id="notice" role="status" aria-live="polite"></div><div id="stats" class="stats"></div>
-<nav id="nav" aria-label="Roster views"></nav><section id="panel" aria-label="Selected roster view"></section>
-</main><dialog id="dialog"></dialog><footer class="shell">Raj Smart Roster</footer></body></html>
+<p><a id="teamPortalLink" href="../team/" style="display:inline-block;padding:8px 13px;border:1px solid #b8dcd5;border-radius:9px;color:#075951;background:#eaf6f3;font-weight:650;text-decoration:none">Open Team Portal →</a></p><nav id="nav" aria-label="Roster views"></nav><section id="panel" aria-label="Selected roster view"></section>
+</main><dialog id="dialog"></dialog><footer class="shell">Raj Smart Roster</footer><script>
+document.getElementById('teamPortalLink').addEventListener('click', event => {
+  const month = document.getElementById('month').value;
+  event.currentTarget.href = '../team/' + (month ? '?month=' + encodeURIComponent(month) : '');
+});
+</script></body></html>
 
 
