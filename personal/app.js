@@ -56,7 +56,7 @@ const option=(id,label,selected)=>'<option value="'+esc(id)+'"'+(String(id)===St
 const options=(all,selected)=>all.map(x=>option(x.id,x.name,selected)).join('');
 const select=(key,label,all,value)=>'<label>'+label+'<select name="'+key+'">'+options(all,value)+'</select></label>';
 const field=(key,label,value='',type='text',attributes='')=>'<label>'+label+'<input required name="'+key+'" type="'+type+'" value="'+esc(value)+'" '+attributes+'></label>';
-const btn=(act,label,id='',extra='')=>'<button type="button" data-act="'+act+'" data-id="'+esc(id)+'" data-extra="'+esc(extra)+'">'+viewNames[label]+'</button>';
+const btn=(act,label,id='',extra='')=>'<button type="button" data-act="'+act+'" data-id="'+esc(id)+'" data-extra="'+esc(extra)+'">'+esc(label)+'</button>';
 const pill=(label,style='')=>'<span class="pill '+style+'">'+esc(label)+'</span>';
 function table(head,rows,cls=''){
   return '<div class="scroll"><table class="'+cls+'"><thead><tr>'+head.map(h=>'<th scope="col">'+h+'</th>').join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+row.map((x,i)=>i===0&&cls==='grid'?'<th scope="row" style="top:auto">'+x+'</th>':'<td>'+x+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
